@@ -14,4 +14,4 @@ where `<link>`-placeholder is just the youtube video link with no brackets.
 models tested that work well:
 - https://huggingface.co/SanjiWatsuki/Kunoichi-7B (very good small model)
 - https://huggingface.co/xDAN-AI/xDAN-L1-Chat-RL-v1 (alternative to kunoichi but works just as well)
-- https://huggingface.co/mistralai/Mixtral-8x7B-Instruct-v0.1 (requires significant amount of vram)
+- https://huggingface.co/mistralai/Mixtral-8x7B-Instruct-v0.1 (requires significant amount of vram i.e. 32GB+)
