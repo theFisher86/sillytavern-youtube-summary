@@ -1,7 +1,7 @@
-import { registerSlashCommand, sendMessageAs } from "../../slash-commands.js";
-import { getContext } from "../../extensions.js";
-import { eventSource, event_types } from "../../../script.js";
-import { amount_gen, generateRaw, updateMessageBlock } from "../../../script.js"
+import { registerSlashCommand, sendMessageAs } from "../../../slash-commands.js";
+import { getContext } from "../../../extensions.js";
+import { eventSource, event_types } from "../../../../script.js";
+import { amount_gen, generateRaw, updateMessageBlock } from "../../../../script.js"
 
 const SUMMARY_TEMPLATE = "Summarize the following youtube video in a few sentences, only keep key point information, do not explain or elaborate, do not use bulletpoints";
 
