@@ -1,7 +1,13 @@
 import { registerSlashCommand, sendMessageAs } from "../../../slash-commands.js";
-import { getContext } from "../../../extensions.js";
-import { eventSource, event_types } from "../../../../script.js";
+import { extension_settings, getContext, loadExtensionSettings } from "../../../extensions.js";
+import { eventSource, event_types, saveSettingsDebounced } from "../../../../script.js";
 import { amount_gen, generateRaw, updateMessageBlock } from "../../../../script.js"
+
+// Keep track of where your extension is located, name should match repo name
+const extensionName = "sillytavern-youtube-summary";
+const extensionFolderPath = `scripts/extensions/third-party/${extensionName}`;
+const extensionSettings = extension_settings[extensionName];
+const defaultSettings = {};
 
 const SUMMARY_TEMPLATE = "Summarize the following youtube video in a few sentences, only keep key point information, do not explain or elaborate, do not use bulletpoints";
 
@@ -12,6 +18,25 @@ registerSlashCommand("ytsummary", (_,link) => {
 registerSlashCommand("ytdiscuss", (_,link) => {
     summarize(link, true)
 }, ["ytdc"], "Summarizes a youtube video and allows to ask follow-up questions", true, true);
+
+// Loads the extension settings if they exist, otherwise initializes them to the defaults.
+async function loadSettings() {
+  //Create the settings if they don't exist
+  extension_settings[extensionName] = extension_settings[extensionName] || {};
+  if (Object.keys(extension_settings[extensionName]).length === 0) {
+    Object.assign(extension_settings[extensionName], defaultSettings);
+  }
+
+  // Updating settings in the UI
+  $("#custom_summarize_script").prop("checked", extension_settings[extensionName].custom_summarize_script).trigger("input");
+}
+
+// This function is called when the extension settings are changed in the UI
+function onCustomSummarizeScriptInput(event) {
+  const value = Boolean($(event.target).prop("checked"));
+  extension_settings[extensionName].custom_summarize_script = value;
+  saveSettingsDebounced();
+}
 
 function youtube_parser(url){
     const regex = /^.*(?:(?:youtu\.be\/|v\/|vi\/|u\/\w\/|embed\/|shorts\/)|(?:(?:watch)?\?v(?:i)?=|\&v(?:i)?=))([^#\&\?]*).*/;
